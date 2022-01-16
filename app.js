@@ -12,6 +12,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 // import files
 const routes = require('./routes')
+require('./config/mongoose')
 
 // set environment
 const PORT = process.env.PORT || 3000
