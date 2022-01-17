@@ -1,0 +1,70 @@
+<div class="container my-auto">
+  <div class="row">
+    <div class="col-lg-8 mx-auto">
+      <div class="container-fluid my-3">
+        <div class="dropdown mb-1">
+          <button class="btn btn-outline-info btn-sm dropdown-toggle" type="button" id="categoryMenuButton"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            類別：{{categoryName}}
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="categoryMenuButton">
+            <li><a class="dropdown-item" href="/">全部</a></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            {{#each categories}}
+            <li><a class="dropdown-item" href="/category/{{this.id}}">{{this.name}}</a></li>
+            {{/each}}
+          </ul>
+        </div>
+        <div class="accordion" id="accordionExample">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+              <button class="accordion-button py-2" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                總金額 Amount:
+              </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+              data-bs-parent="#accordionExample">
+              <div class="accordion-body text-center">
+                <h1>{{totalAmount}}</h1>
+              </div>
+            </div>
+          </div>
+        </div>
+        <table class="table align-middle table-striped table-hover mb-2">
+          <thead>
+            <tr>
+              <th scope="col" class="pb-0 text-center">類別</th>
+              <th scope="col" class="pb-0">名稱</th>
+              <th scope="col" class="pb-0 text-end">金額</th>
+              <th scope="col" class="pb-0"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each records}}
+            <tr>
+              <th scope="row" class="text-center"><img src="{{this.category}}" alt=""
+                  style="width:2em; height:2em; filter: invert(60%) sepia(100%) saturate(800%) hue-rotate(160deg);">
+              </th>
+              <td>
+                {{this.name}}<br>
+                {{this.date}}
+              </td>
+              <td class="text-end">{{this.amount}}</td>
+              <td class="text-end">
+                <a class="btn btn-outline-info m-1" href="#" role="button">Edit</button>
+                  <a class="btn btn-outline-info m-1" href="#" role="button">Delete</button>
+              </td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+        <div class="d-grid gap-2 col-6 mt-3 mx-auto">
+          <a class="btn btn-primary btn-lg" href="#" role="button">新增支出</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
