@@ -10,21 +10,33 @@ const CATEGORY = {
   其他: "pen"
 }
 
-router.get('/', async (req, res) => {
-  const categories = await getCategoryList()  // for render category
-  const categoryName = '全部'
-  const records = await getRecordList({})
-  const totalAmount = getTotalAmount(records)
-  res.render('index', { categories, records, totalAmount, categoryName })
+router.get('/', async (req, res, next) => {
+  try {
+    const categories = await getCategoryList()  // for render category
+    const records = await getRecordList({})
+    const categoryName = '全部'
+    const totalAmount = getTotalAmount(records)
+    res.render('index', { categories, records, totalAmount, categoryName })
+  } catch (error) {
+    next(error)
+  }
 })
 
 router.get('/category/:id', async (req, res) => {
   const id = req.params.id
-  const categories = await getCategoryList()
-  const categoryName = categories[id -1].name
-  const records = await getRecordList({ categoryId: await getCategory_idById(id) })
-  const totalAmount = getTotalAmount(records)
-  res.render('index', { categories, records, totalAmount, categoryName })
+  try {
+    const categories = await getCategoryList()
+    const categoryName = categories[id - 1].name
+    const records = await getRecordList({ categoryId: await getCategory_idById(id) })
+    const totalAmount = getTotalAmount(records)
+    res.render('index', { categories, records, totalAmount, categoryName })
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.get('/new', async (req, res) => {
+  
 })
 
 module.exports = router
