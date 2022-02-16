@@ -37,5 +37,15 @@ router.put('/:_id', async (req, res, next) => {
     next(error)
   }
 })
+router.delete('/:_id', async (req, res, next) => {
+  try {
+    let record = await Record.findById(req.params._id)
+    await record.remove()
+    req.flash('success_msg', '成功刪除支出！')
+    res.redirect('/')
+  } catch (error) {
+    next(error)
+  }
+})
 
 module.exports = router

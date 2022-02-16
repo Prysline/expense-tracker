@@ -51,8 +51,10 @@
       </td>
       <td class="text-end">{{this.amount}}</td>
       <td class="text-end">
-        <a class="btn btn-outline-info m-1" href="#" role="button">Edit</button>
-          <a class="btn btn-outline-info m-1" href="#" role="button">Delete</button>
+        <a class="btn btn-outline-info m-1" href="/records/{{this._id}}/edit" role="button">Edit</a>
+        <form action="/records/{{this._id}}?_method=DELETE" method="post" style="display: inline;" onclick="return confirm(`確定要刪除 {{ this.name }} 嗎？`)">
+          <button type="submit" class="btn btn-outline-danger m-1">Delete</button>
+        </form>
       </td>
     </tr>
     {{/each}}
