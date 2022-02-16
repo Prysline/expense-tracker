@@ -1,4 +1,5 @@
 const express = require('express')
+const dayjs = require('dayjs')
 const router = express.Router()
 const Category = require('../../models/category')
 const Record = require('../../models/record')
@@ -38,7 +39,28 @@ router.get('/category/:id', async (req, res) => {
 })
 
 router.get('/new', async (req, res) => {
-
+  const categories = await getCategoryList() // for render category
+  const today = dayjs().format('YYYY-MM-DD')
+  res.render('new', { categories, today })
+})
+router.post('/new', async (req, res, next) => {
+  console.log(req.body)
+  const { name, date, category, amount } = req.body
+  const userId = req.user._id
+  const errors = getFormErrors(name, date, category, amount)
+  if (errors.length) {
+    return res.render('register', { errors, name, email, password, confirmPassword })
+  }
+  try {
+    const id = await getLatestRecordId()
+    const categoryId = await getCategory_idByName(category)
+    const record = { id, name, date, categoryId, amount, userId }
+    await Record.create(record)
+    req.flash('success_msg', '成功新增支出！')
+    res.redirect('/')
+  } catch (error) {
+    next(error)
+  }
 })
 
 module.exports = router
@@ -49,6 +71,9 @@ function getCategoryList () {
 
 async function getCategory_idById (id) {
   return (await Category.findOne({ id }).lean())._id
+}
+async function getCategory_idByName (name) {
+  return (await Category.findOne({ name }).lean())._id
 }
 
 async function getRecordList (condition) {
@@ -65,7 +90,22 @@ async function getRecordList (condition) {
     }
   }))
 }
+async function getLatestRecordId () {
+  const records = await Record.find().lean().sort('-id')
+  return records[0].id + 1
+}
 
 function getTotalAmount (records) {
   return records.reduce((total, item) => total + item.amount, 0)
+}
+
+function getFormErrors (name, date, category, amount) {
+  const errors = []
+  if (!name || !date || !category || !amount) {
+    errors.push({ message: '所有欄位都是必填。' })
+  }
+  if (amount < 0) {
+    errors.push({ message: '請輸入大於等於 0 的數字。' })
+  }
+  return errors
 }
