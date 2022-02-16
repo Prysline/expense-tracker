@@ -17,7 +17,7 @@ router.get('/', async (req, res, next) => {
   }
 })
 router.get('/index', (req, res) => res.redirect('/'))
-router.get('/category/:id', async (req, res) => {
+router.get('/category/:id', async (req, res, next) => {
   const userId = req.user._id
   const id = req.params.id
   try {
