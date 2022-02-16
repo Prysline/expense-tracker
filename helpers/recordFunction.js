@@ -1,3 +1,5 @@
+const dayjs = require('dayjs')
+const Record = require('../models/record')
 const Category = require('../models/category')
 const CATEGORY = {
   家居物業: "home",
@@ -16,7 +18,6 @@ module.exports = {
     return (await Category.findOne({ id }).lean())._id
   },
   getRecordList: async (condition) => {
-    const categories = await getCategoryList()
     // condition: object
     return Promise.all((await Record.find(condition).lean().sort('id')).map(async (item) => {
       const categoryName = (await Category.findById(item.categoryId).lean()).name
@@ -36,9 +37,9 @@ module.exports = {
   getTotalAmount: (records) => {
     return records.reduce((total, item) => total + item.amount, 0)
   },
-  getFormErrors: (name, date, category, amount) => {
+  getFormErrors: (name, date, categoryId, amount) => {
     const errors = []
-    if (!name || !date || !category || !amount) {
+    if (!name || !date || !categoryId || !amount) {
       errors.push({ message: '所有欄位都是必填。' })
     }
     if (amount < 0) {

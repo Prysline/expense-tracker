@@ -3,6 +3,7 @@ const express = require('express')
 const session = require('express-session')
 const flash = require('connect-flash')
 const usePassport = require('./config/passport')
+const handlebarsHelpers = require('./helpers/handlebars-helpers')
 const app = express()
 
 const { engine: exphbs } = require('express-handlebars')
@@ -21,7 +22,7 @@ require('./config/mongoose')
 const PORT = process.env.PORT || 3000
 
 // setting template engine
-app.engine('.hbs', exphbs({ extname: '.hbs' }))
+app.engine('.hbs', exphbs({ extname: '.hbs', helpers: handlebarsHelpers }))
 app.set('view engine', '.hbs')
 app.set('views', './views')
 

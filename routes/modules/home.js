@@ -31,21 +31,24 @@ router.get('/category/:id', async (req, res, next) => {
   }
 })
 
-router.get('/new', async (req, res) => {
-  const categories = await recordFunc.getCategoryList() // for render category
-  const today = dayjs().format('YYYY-MM-DD')
-  res.render('new', { categories, today })
+router.get('/new', async (req, res,next) => {
+  try {
+    const categories = await recordFunc.getCategoryList() // for render category
+    const today = dayjs().format('YYYY-MM-DD')
+    res.render('new', { categories, date: today })
+  } catch (error) {
+    next(error)
+  }
 })
 router.post('/new', async (req, res, next) => {
   console.log(req.body)
-  const { name, date, category, amount } = req.body
+  const { name, date, categoryId, amount } = req.body
   const userId = req.user._id
-  const errors = recordFunc.getFormErrors(name, date, category, amount)
+  const errors = recordFunc.getFormErrors(name, date, categoryId, amount)
   if (errors.length) {
-    return res.render('register', { errors, name, email, password, confirmPassword })
+    return res.render('new', { errors, name, date, categoryId, amount})
   }
   try {
-    const categoryId = await getCategory_idByName(category)
     const id = await recordFunc.getLatestRecordId()
     const record = { id, name, date, categoryId, amount, userId }
     await Record.create(record)

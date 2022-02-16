@@ -3,23 +3,23 @@
   <label for="name" class="text-secondary col-form-label-lg">
     名稱*：
   </label>
-  <input type="text" class="form-control form-control-lg" name="name" id="name" placeholder="支出條目" required>
+  <input type="text" class="form-control form-control-lg" name="name" id="name" placeholder="支出條目" value="{{name}}" required>
   <div class="invalid-feedback">名稱不可為空白。</div>
 </div>
 <div class="form-group mb-2">
   <label for="date" class="text-secondary col-form-label-lg">
     日期*：
   </label>
-  <input type="date" class="form-control form-control-lg" name="date" id="date" placeholder="支出日期" value="{{today}}" required>
+  <input type="date" class="form-control form-control-lg" name="date" id="date" placeholder="支出日期" value="{{date}}" required>
   <div class="invalid-feedback">請輸入日期。</div>
 </div>
 <div class="form-group mb-2">
   <label for="category" class="text-secondary col-form-label-lg">
     類別*：
   </label>
-  <select class="form-select form-select-lg" name="category" id="category" placeholder="請輸入分類" required>
+  <select class="form-select form-select-lg" name="categoryId" id="categoryId" placeholder="請輸入分類" required>
     {{#each categories}}
-    <option>{{this.name}}</option>
+    <option value="{{this._id}}"{{#ifCond this.id ../restaurant.categoryId}} selected{{/ifCond}}>{{this.name}}</option>
     {{/each}}
   </select>
   <div class="invalid-feedback">請輸入支出分類。</div>
@@ -28,10 +28,11 @@
   <label for="amount" class="text-secondary col-form-label-lg">
     金額*：
   </label>
-  <input type="number" min="0" class="form-control form-control-lg" name="amount" id="amount" placeholder="消費金額" required>
+  <input type="number" min="0" class="form-control form-control-lg" name="amount" id="amount" placeholder="消費金額" value="{{amount}}" required>
   <div class="invalid-feedback">請輸入大於等於 0 的數字。</div>
 </div>
 <div class="d-flex justify-content-center my-3">
   <button type="submit" class="btn btn-primary mx-2 btn-lg">Submit</button>
   <button type="reset" class="btn btn-secondary mx-2 btn-lg">Reset</button>
+  <a class="btn btn-info mx-2 btn-lg" href="/">Back</a>
 </div>
