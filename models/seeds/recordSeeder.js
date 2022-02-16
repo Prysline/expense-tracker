@@ -38,6 +38,11 @@ async function registerSeedUsers (userList) {
   const salt = await bcrypt.genSalt(10)
   const hash = await bcrypt.hash(password, salt)
   return Promise.all(userList.map(async (name, index) => {
-    return User.create({ id: index + 1, name, password: hash })
+    return User.create({
+      id: index + 1,
+      name,
+      email: `test${index+1}@test.com`,
+      password: hash
+    })
   }))
 }
