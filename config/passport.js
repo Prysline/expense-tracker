@@ -17,7 +17,7 @@ module.exports = app => {
         if (!user) return done(null, false, req.flash('warning_msg', '帳號或密碼輸入錯誤！'))
         const isMatch = await bcrypt.compare(password, user.password)
         if (!isMatch) return done(null, false, req.flash('warning_msg', '帳號或密碼輸入錯誤！'))
-        return done(null, user)
+        return done(null, user, req.flash('success_msg', '登入成功！'))
       } catch (error) {
         done(error, false)
       }
