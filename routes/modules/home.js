@@ -12,8 +12,9 @@ const CATEGORY = {
 
 router.get('/', async (req, res, next) => {
   try {
+    const userId = req.user._id
     const categories = await getCategoryList()  // for render category
-    const records = await getRecordList({})
+    const records = await getRecordList({ userId })
     const categoryName = '全部'
     const totalAmount = getTotalAmount(records)
     res.render('index', { categories, records, totalAmount, categoryName })
@@ -21,13 +22,14 @@ router.get('/', async (req, res, next) => {
     next(error)
   }
 })
-
+router.get('/index', (req, res) => res.redirect('/'))
 router.get('/category/:id', async (req, res) => {
+  const userId = req.user._id
   const id = req.params.id
   try {
     const categories = await getCategoryList()
     const categoryName = categories[id - 1].name
-    const records = await getRecordList({ categoryId: await getCategory_idById(id) })
+    const records = await getRecordList({ userId, categoryId: await getCategory_idById(id) })
     const totalAmount = getTotalAmount(records)
     res.render('index', { categories, records, totalAmount, categoryName })
   } catch (error) {
@@ -36,7 +38,7 @@ router.get('/category/:id', async (req, res) => {
 })
 
 router.get('/new', async (req, res) => {
-  
+
 })
 
 module.exports = router

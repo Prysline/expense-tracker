@@ -1,5 +1,7 @@
 // import package
 const express = require('express')
+const session = require('express-session')
+const usePassport = require('./config/passport')
 const app = express()
 
 const { engine: exphbs } = require('express-handlebars')
@@ -22,6 +24,13 @@ app.engine('.hbs', exphbs({ extname: '.hbs' }))
 app.set('view engine', '.hbs')
 app.set('views', './views')
 
+// setting session
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true
+}))
+
 // setting static files
 app.use(express.static('public'))
 
@@ -29,6 +38,12 @@ app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 
+usePassport(app)
+app.use((req, res, next) => {
+  res.locals.isAuthenticated = req.isAuthenticated()
+  res.locals.user = req.user
+  next()
+})
 app.use(routes)
 
 app.listen(PORT, () => {
