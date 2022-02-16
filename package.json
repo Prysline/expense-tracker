@@ -25,6 +25,7 @@
   "homepage": "https://github.com/Prysline/expense-tracker#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "connect-flash": "^0.1.1",
     "dotenv": "^12.0.3",
     "express": "^4.17.2",
     "express-handlebars": "^6.0.2",
