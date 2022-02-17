@@ -3,10 +3,10 @@ const dayjs = require('dayjs')
 const router = express.Router()
 const Category = require('../../models/category')
 const Record = require('../../models/record')
-const recordFunc = require('../../helpers/recordFunction')
+const appFunc = require('../../helpers/appFunctions')
 
 router.get('/:_id/edit', async (req, res, next) => {
-  const categories = await recordFunc.getCategoryList()
+  const categories = await appFunc.getCategoryList()
   const _id = req.params._id
   try {
     const record = await Record.findById({ _id }).lean()
