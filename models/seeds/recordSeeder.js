@@ -34,14 +34,14 @@ db.once('open', async () => {
 })
 
 async function registerSeedUsers (userList) {
-  const password = '123'
+  const password = '12345678'
   const salt = await bcrypt.genSalt(10)
   const hash = await bcrypt.hash(password, salt)
   return Promise.all(userList.map(async (name, index) => {
     return User.create({
       id: index + 1,
       name,
-      email: `test${index+1}@test.com`,
+      email: `user${index + 1}@example.com`,
       password: hash
     })
   }))
