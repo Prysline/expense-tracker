@@ -34,6 +34,10 @@ module.exports = {
     const records = await Record.find().lean().sort('-id')
     return records[0].id + 1
   },
+  getLatestUserId: async () => {
+    const users = await User.find().lean().sort('-id')
+    return users[0].id + 1
+  },
   getTotalAmount: (records) => {
     return records.reduce((total, item) => total + item.amount, 0)
   },
