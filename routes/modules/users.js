@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs')
 const router = express.Router()
 const passport = require('passport')
 const User = require('../../models/user')
+const appFunc = require('../../helpers/appFunctions')
 
 router.get('/login', (req, res) => {
   res.render('login')
@@ -31,8 +32,10 @@ router.post('/register', async (req, res, next) => {
       errors.push({ message: '這個 Email 已經註冊過了。' })
       res.render('register', { errors, name, email, password, confirmPassword })
     } else {
+      const id = await appFunc.getLatestUserId()
       const hash = await bcrypt.hash(password, await bcrypt.genSalt(10))
-      await User.create({ name, email, password: hash })
+      await User.create({ id, name, email, password: hash })
+      req.flash('success_msg', '成功註冊！請進行登入！')
       res.redirect('/users/login')
     }
   } catch (error) {

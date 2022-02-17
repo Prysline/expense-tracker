@@ -41,7 +41,6 @@ router.get('/new', async (req, res,next) => {
   }
 })
 router.post('/new', async (req, res, next) => {
-  console.log(req.body)
   const { name, date, categoryId, amount } = req.body
   const userId = req.user._id
   const errors = appFunc.getFormErrors(name, date, categoryId, amount)
